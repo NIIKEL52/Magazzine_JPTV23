@@ -1,15 +1,65 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+import models.Car;
+import models.Employee;
+import models.Customer;
+import store.CarStore;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        Employee employee = new Employee("Иван Иванов", "Менеджер по продажам");
+        CarStore carStore = new CarStore(employee);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        // Добавляем несколько машин в магазин
+        carStore.addCar(new Car("Nissan Silvia", 30000));
+        carStore.addCar(new Car("Land Cruiser 300", 28000));
+        carStore.addCar(new Car("Mercedes AMG G63", 40000));
+
+        while (true) {
+            System.out.println("\n--- Магазин Автомобилей ---");
+            System.out.println("1. Список доступных машин");
+            System.out.println("2. Покупка машины");
+            System.out.println("3. Список проданных машин");
+            System.out.println("4. Информация о сотруднике");
+            System.out.println("5. Выход");
+            System.out.print("Выберите действие: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Очистка буфера
+
+            switch (choice) {
+                case 1:
+                    carStore.listAvailableCars();
+                    break;
+                case 2:
+                    System.out.print("Введите модель машины для покупки: ");
+                    String model = scanner.nextLine();
+
+                    System.out.print("Введите имя покупателя: ");
+                    String customerName = scanner.nextLine();
+
+                    System.out.print("Введите контактные данные покупателя: ");
+                    String contactInfo = scanner.nextLine();
+
+                    Customer buyer = new Customer(customerName, contactInfo);
+                    carStore.sellCar(model, buyer);
+                    break;
+                case 3:
+                    carStore.listSoldCars();
+                    break;
+                case 4:
+                    carStore.showEmployeeInfo();
+                    break;
+                case 5:
+                    System.out.println("Выход из программы...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Неверный выбор. Пожалуйста, выберите снова.");
+                    break;
+            }
         }
     }
 }
+
